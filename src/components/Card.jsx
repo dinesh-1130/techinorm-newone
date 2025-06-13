@@ -549,7 +549,7 @@ const Phase2CardsScroll = () => {
       .to(phase2TrackRef.current, {
         x: -1300,
         ease: "none",
-        duration: 3,
+        duration: 10,
         delay: 1.5,
       })
       .to(phase2CardRefs.current[phase2Cards.length - 1], {
@@ -561,7 +561,7 @@ const Phase2CardsScroll = () => {
           sessionStorage.setItem("enteredFromZoom", "true");
           setTimeout(() => {
             window.location.href = "/home";
-          }, 100);
+          }, 50);
         },
       });
 
