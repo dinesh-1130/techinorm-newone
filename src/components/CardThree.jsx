@@ -1321,7 +1321,7 @@ const Phase3CardsScroll = () => {
       .to(phase3Ref.current, {
         // opacity: 0,
         scale: 0.9,
-        duration: 0.3,
+        duration: 0.2,
         ease: "power2.inOut",
         delay: 0.2,
       });
