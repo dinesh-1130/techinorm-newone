@@ -570,56 +570,38 @@ const Phase2CardsScroll = () => {
   };
 
   const initializeMobileAnimation = () => {
-    if (!window.gsap || !window.ScrollTrigger) return;
-
-    const gsap = window.gsap;
-    gsap.registerPlugin(window.ScrollTrigger);
-    window.ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-
+    // Simple CSS-based animation for mobile - no GSAP required
     mobileCardRefs.current.forEach((card, index) => {
       if (!card) return;
 
-      gsap.set(card, {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        visibility: "visible",
-        clearProps: "all",
-      });
+      // Add staggered fade-in animation using CSS
+      card.style.opacity = "0";
+      card.style.transform = "translateY(30px)";
+      card.style.transition = "opacity 0.6s ease-out, transform 0.6s ease-out";
 
-      gsap.fromTo(
-        card,
-        {
-          y: 50,
-          opacity: 0,
-        },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.6,
-          ease: "power2.out",
-          delay: index * 0.1,
-          scrollTrigger: {
-            trigger: card,
-            start: "top 95%",
-            toggleActions: "play none none none",
-          },
-        }
-      );
+      setTimeout(() => {
+        card.style.opacity = "1";
+        card.style.transform = "translateY(0)";
+      }, index * 100);
     });
-
-    window.ScrollTrigger.refresh();
   };
 
   const initializeAnimation = () => {
     if (isMobile) {
-      initializeMobileAnimation();
+      // Mobile uses CSS animations, call directly
+      setTimeout(initializeMobileAnimation, 100);
     } else {
       initializeDesktopAnimation();
     }
   };
 
   useEffect(() => {
+    if (isMobile) {
+      // For mobile, we don't need GSAP, just initialize the CSS animations
+      setTimeout(initializeMobileAnimation, 100);
+      return;
+    }
+
     if (window.gsap && window.ScrollTrigger) {
       initializeAnimation();
       return;
@@ -719,8 +701,7 @@ const Phase2CardsScroll = () => {
             <div
               key={index}
               ref={(el) => (mobileCardRefs.current[index] = el)}
-              className="w-full opacity-100 visible"
-              style={{ opacity: 1, visibility: "visible" }}
+              className="w-full"
             >
               <div className="w-full h-[280px] bg-black border border-gray-300 flex flex-col justify-between p-6 shadow-lg rounded-lg">
                 <h2 className="text-white text-xl font-bold leading-tight whitespace-pre-line">
